@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+<title>Turno de Comida</title>
+
+<link rel="manifest" href="/manifest.json" />
+<link rel="apple-touch-icon" href="/icons/icon-192.png" />
+<meta name="theme-color" content="#4f46e5" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Turno Perros" />
+<link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+
+<div class="app">
+  <header class="app-header">
+    <span class="app-header-icon">🐾</span>
+    <span class="app-header-title">Turno de Comida</span>
+  </header>
+
+  <main class="app-main">
+
+    <section id="view-today" class="view">
+      <div class="hero-card">
+        <div id="status-ring" class="status-ring pending">
+          <span id="status-initial" class="status-initial">—</span>
+          <span id="status-badge" class="status-badge">⏳</span>
+        </div>
+        <p class="hero-label">Hoy le toca a</p>
+        <p id="assigned-name" class="hero-name">—</p>
+        <p id="status-text" class="hero-status">Cargando…</p>
+      </div>
+
+      <h2 class="section-title">¿Quién le dio comida?</h2>
+      <div id="person-buttons" class="avatar-row"></div>
+    </section>
+
+    <section id="view-history" class="view" style="display:none">
+      <h2 class="section-title">Últimos 30 días</h2>
+      <ul id="history-list" class="history-list"></ul>
+    </section>
+
+  </main>
+
+  <nav class="bottom-nav">
+    <button id="tab-today" class="nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg>
+      <span>Hoy</span>
+    </button>
+    <button id="tab-history" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+      <span>Historial</span>
+    </button>
+  </nav>
+</div>
+
+<div id="who-modal" class="modal" style="display:none">
+  <div class="modal-card">
+    <div class="modal-handle"></div>
+    <h2>¿Quién eres?</h2>
+    <p class="modal-subtitle">Para poder avisarte cuando te toque el turno.</p>
+    <div id="who-modal-buttons" class="avatar-row"></div>
+    <button id="who-modal-skip" class="skip-link">Ahora no</button>
+  </div>
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>
