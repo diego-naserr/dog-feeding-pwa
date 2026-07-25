@@ -1,8 +1,0 @@
-fastapi
-uvicorn[standard]
-sqlalchemy
-apscheduler
-pywebpush
-py-vapid
-python-dotenv
-Pillow
