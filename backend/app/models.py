@@ -18,6 +18,7 @@ class Person(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, unique=True, nullable=False)
     active = Column(Boolean, default=True, nullable=False)
+    color = Column(String, nullable=True)
 
 
 class FeedingDay(Base):
@@ -37,6 +38,29 @@ class FeedingDay(Base):
 
     assigned_person = relationship("Person", foreign_keys=[assigned_person_id])
     fed_by_person = relationship("Person", foreign_keys=[fed_by_person_id])
+
+
+class WeekdaySchedule(Base):
+    """Quien tiene asignado cada dia de la semana. Editable desde Ajustes;
+    se siembra una vez desde config.WEEKDAY_SCHEDULE en la primera version
+    que la introduce, y desde ahi vive solo en la base de datos."""
+
+    __tablename__ = "weekday_schedule"
+
+    weekday = Column(Integer, primary_key=True)  # 0=Lunes ... 6=Domingo
+    person_id = Column(Integer, ForeignKey("people.id"), nullable=False)
+
+    person = relationship("Person")
+
+
+class AppSettings(Base):
+    """Fila unica (id=1) con ajustes editables desde la app."""
+
+    __tablename__ = "app_settings"
+
+    id = Column(Integer, primary_key=True)
+    notify_hour = Column(Integer, nullable=False, default=20)
+    notify_minute = Column(Integer, nullable=False, default=0)
 
 
 class PushSubscription(Base):

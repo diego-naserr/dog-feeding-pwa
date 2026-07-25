@@ -129,23 +129,25 @@ elige su nombre en su propio dispositivo. Con eso queda asociada la
 suscripción push a esa persona en ese teléfono, para que el aviso de las
 20:00 le llegue a quien le toca ese día.
 
-## Editar quién le toca cada día
+## Ajustes — todo se edita desde la app
 
-Todo se edita en [`backend/app/config.py`](backend/app/config.py) sin
-tocar el resto del código:
+La pestaña **Ajustes** (⚙️, abajo a la derecha) permite, sin tocar código
+ni volver a desplegar:
 
-```python
-PEOPLE = ["Diego", "Tomás", "Ignacia", "Fran"]
+- **Sos vos** — cambiar de identidad en cualquier momento, ver si las
+  notificaciones están activas en ese dispositivo, y mandarse una
+  notificación de prueba para confirmar que realmente llegan.
+- **Personas** — agregar gente nueva, elegirles un color, renombrarlas, y
+  desactivarlas (se conserva su historial; no se puede desactivar a
+  alguien que todavía tiene días asignados en la rotación).
+- **Rotación semanal** — quién le toca cada día de la semana.
+- **Hora del aviso** — a qué hora llega el push si nadie marcó que le dio
+  de comer. "A tiempo" se calcula automáticamente como una hora después.
 
-WEEKDAY_SCHEDULE = {
-    0: "Diego",     # Lunes
-    1: "Tomás",     # Martes
-    2: "Diego",     # Miércoles
-    3: "Ignacia",   # Jueves
-    4: "Tomás",     # Viernes
-    5: "Fran",      # Sábado
-    6: "Ignacia",   # Domingo
-}
-```
+En el día a día también hay un botón **Deshacer** en la pantalla de Hoy,
+por si alguien marca por error que ya le dieron de comer.
 
-Después de editar, hacer commit + push — Railway redespliega solo.
+[`backend/app/config.py`](backend/app/config.py) solo se usa como punto de
+partida la primera vez que arranca la app (para no empezar con la base de
+datos vacía). Después de ese primer arranque, editar ese archivo ya no
+tiene efecto — todo vive en la base de datos y se edita desde Ajustes.

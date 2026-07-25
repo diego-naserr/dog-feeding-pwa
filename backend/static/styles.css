@@ -381,3 +381,277 @@ body {
   font-size: 0.95rem;
   font-weight: 600;
 }
+
+/* Deshacer (hero card) */
+.undo-link {
+  display: block;
+  margin: 0.6rem auto 0;
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+}
+
+/* Ajustes */
+.settings-card {
+  background: var(--card-bg);
+  border-radius: 20px;
+  padding: 1.1rem 1.1rem 1.25rem;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 0.4rem;
+}
+
+.push-status-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.push-status {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.4rem 0.7rem;
+  border-radius: 10px;
+  width: fit-content;
+}
+
+.push-status.active {
+  color: var(--success);
+  background: var(--success-bg);
+}
+
+.push-status.inactive,
+.push-status.unsupported {
+  color: var(--text-secondary);
+  background: var(--border);
+}
+
+.push-status.blocked {
+  color: var(--danger);
+  background: var(--warning-bg);
+}
+
+.secondary-btn {
+  align-self: flex-start;
+  background: var(--border);
+  color: var(--text);
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.55rem 0.9rem;
+  border-radius: 12px;
+}
+
+.secondary-btn:active {
+  transform: scale(0.97);
+}
+
+.primary-btn {
+  width: 100%;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  font-size: 0.92rem;
+  font-weight: 700;
+  padding: 0.75rem 1rem;
+  border-radius: 14px;
+  margin-top: 0.9rem;
+}
+
+.primary-btn:active {
+  transform: scale(0.98);
+}
+
+.text-input {
+  width: 100%;
+  font-size: 0.95rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-family: inherit;
+}
+
+/* Lista de personas (Ajustes) */
+.people-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.person-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.person-inactive {
+  opacity: 0.5;
+}
+
+.avatar-circle.small {
+  width: 38px;
+  height: 38px;
+  font-size: 0.95rem;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.person-name {
+  flex: 1;
+  font-size: 0.92rem;
+  font-weight: 600;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.person-rename-input {
+  flex: 1;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.9rem;
+}
+
+.person-actions {
+  display: flex;
+  gap: 0.3rem;
+  flex-shrink: 0;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  padding: 0.3rem;
+  line-height: 1;
+}
+
+.person-color-picker-row {
+  padding: 0.3rem 0 0.2rem 3rem;
+}
+
+.color-swatch-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+}
+
+.color-swatch {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  padding: 0;
+}
+
+.color-swatch-selected {
+  border-color: var(--text);
+}
+
+.add-person-form {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+/* Rotación semanal */
+.schedule-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.schedule-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.schedule-day-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  flex: 1;
+}
+
+.schedule-select {
+  flex: 1.2;
+  font-size: 0.9rem;
+  padding: 0.55rem 0.6rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-family: inherit;
+}
+
+.time-row {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.time-row .text-input {
+  flex: 1;
+}
+
+.time-row .primary-btn {
+  width: auto;
+  margin-top: 0;
+  white-space: nowrap;
+}
+
+.settings-hint {
+  margin: 0.75rem 0 0;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.avatar-chip-selected .avatar-circle {
+  box-shadow: 0 0 0 3px var(--accent);
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 5.5rem);
+  transform: translate(-50%, 12px);
+  background: var(--text);
+  color: var(--bg);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.7rem 1.1rem;
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 30;
+  max-width: 85vw;
+  text-align: center;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.toast.error {
+  background: var(--danger);
+  color: #fff;
+}

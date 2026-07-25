@@ -2,9 +2,11 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 
 from . import models, rotation
-from .config import NOTIFY_HOUR, NOTIFY_MINUTE, TIMEZONE
+from .config import TIMEZONE
 from .database import SessionLocal
 from .push_service import send_push
+
+JOB_ID = "daily_feeding_check"
 
 
 def check_and_notify() -> None:
@@ -40,13 +42,35 @@ def check_and_notify() -> None:
         db.close()
 
 
+def _read_notify_time() -> tuple[int, int]:
+    db = SessionLocal()
+    try:
+        settings = db.query(models.AppSettings).filter(models.AppSettings.id == 1).first()
+        if settings:
+            return settings.notify_hour, settings.notify_minute
+        return 20, 0
+    finally:
+        db.close()
+
+
 def start_scheduler() -> BackgroundScheduler:
     scheduler = BackgroundScheduler(timezone=TIMEZONE)
+    hour, minute = _read_notify_time()
     scheduler.add_job(
         check_and_notify,
-        CronTrigger(hour=NOTIFY_HOUR, minute=NOTIFY_MINUTE, timezone=TIMEZONE),
-        id="daily_feeding_check",
+        CronTrigger(hour=hour, minute=minute, timezone=TIMEZONE),
+        id=JOB_ID,
         replace_existing=True,
     )
     scheduler.start()
     return scheduler
+
+
+def reschedule(scheduler: BackgroundScheduler, hour: int, minute: int) -> None:
+    """Se llama cuando alguien cambia la hora del aviso desde Ajustes."""
+    scheduler.add_job(
+        check_and_notify,
+        CronTrigger(hour=hour, minute=minute, timezone=TIMEZONE),
+        id=JOB_ID,
+        replace_existing=True,
+    )

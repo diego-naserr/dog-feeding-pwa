@@ -4,7 +4,7 @@ from datetime import datetime
 from sqlalchemy.orm import Session
 
 from . import models
-from .config import TIMEZONE, WEEKDAY_SCHEDULE
+from .config import TIMEZONE
 
 
 def today_chile() -> date_cls:
@@ -17,8 +17,18 @@ def now_chile() -> datetime:
     return datetime.now(TIMEZONE).replace(tzinfo=None)
 
 
-def assigned_name_for_date(d: date_cls) -> str:
-    return WEEKDAY_SCHEDULE[d.weekday()]
+def assigned_person_for_date(db: Session, d: date_cls) -> models.Person:
+    entry = (
+        db.query(models.WeekdaySchedule)
+        .filter(models.WeekdaySchedule.weekday == d.weekday())
+        .first()
+    )
+    if entry is None:
+        raise ValueError(
+            f"No hay nadie asignado para el dia de la semana {d.weekday()} "
+            "(Ajustes → Rotación semanal)"
+        )
+    return entry.person
 
 
 def get_or_create_feeding_day(db: Session, d: date_cls) -> models.FeedingDay:
@@ -26,13 +36,7 @@ def get_or_create_feeding_day(db: Session, d: date_cls) -> models.FeedingDay:
     if day:
         return day
 
-    assigned_name = assigned_name_for_date(d)
-    person = db.query(models.Person).filter(models.Person.name == assigned_name).first()
-    if person is None:
-        raise ValueError(
-            f"La persona '{assigned_name}' está en WEEKDAY_SCHEDULE pero no en PEOPLE (config.py)"
-        )
-
+    person = assigned_person_for_date(db, d)
     day = models.FeedingDay(date=d, assigned_person_id=person.id, fed=False)
     db.add(day)
     db.commit()
