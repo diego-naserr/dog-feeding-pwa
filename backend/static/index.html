@@ -38,6 +38,10 @@
 
       <h2 class="section-title">¿Quién le dio comida?</h2>
       <div id="person-buttons" class="avatar-row"></div>
+
+      <a id="whatsapp-link" class="whatsapp-button" href="#" target="_blank" rel="noopener" style="display:none">
+        💬 Abrir grupo de WhatsApp
+      </a>
     </section>
 
     <section id="view-history" class="view" style="display:none">
@@ -71,13 +75,25 @@
         <button id="save-schedule-btn" class="primary-btn">Guardar rotación</button>
       </div>
 
-      <h2 class="section-title">Hora del aviso</h2>
+      <h2 class="section-title">Horarios de aviso</h2>
       <div class="settings-card">
-        <div class="time-row">
+        <div class="settings-field">
+          <label class="settings-field-label" for="notify-time-input">Aviso principal (a quien le toca)</label>
           <input id="notify-time-input" type="time" class="text-input" />
-          <button id="save-time-btn" class="primary-btn">Guardar</button>
         </div>
-        <p class="settings-hint">Se considera "a tiempo" hasta una hora después de esta hora.</p>
+        <div class="settings-field">
+          <label class="settings-field-label" for="reminder-time-input">Si nadie marcó, avisar a todos</label>
+          <input id="reminder-time-input" type="time" class="text-input" />
+        </div>
+        <div class="settings-field">
+          <label class="settings-field-label" for="whatsapp-input">Link del grupo de WhatsApp (opcional)</label>
+          <input id="whatsapp-input" type="url" class="text-input" placeholder="https://chat.whatsapp.com/..." />
+        </div>
+        <button id="save-time-btn" class="primary-btn">Guardar</button>
+        <p class="settings-hint">
+          Se considera "a tiempo" si se marcó antes del segundo aviso. Si dejás el link de
+          WhatsApp, el aviso de "nadie marcó" lleva directo al grupo al tocarlo.
+        </p>
       </div>
     </section>
 

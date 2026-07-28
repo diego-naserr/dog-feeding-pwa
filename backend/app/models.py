@@ -54,13 +54,20 @@ class WeekdaySchedule(Base):
 
 
 class AppSettings(Base):
-    """Fila unica (id=1) con ajustes editables desde la app."""
+    """Fila unica (id=1) con ajustes editables desde la app.
+
+    Hay dos avisos: uno principal (notify_*) solo para quien le toca ese
+    dia, y uno de escalamiento (reminder_*) que llega a TODOS si para esa
+    hora todavia nadie marco que le dio de comer."""
 
     __tablename__ = "app_settings"
 
     id = Column(Integer, primary_key=True)
     notify_hour = Column(Integer, nullable=False, default=20)
     notify_minute = Column(Integer, nullable=False, default=0)
+    reminder_hour = Column(Integer, nullable=False, default=21)
+    reminder_minute = Column(Integer, nullable=False, default=30)
+    whatsapp_group_url = Column(String, nullable=True)
 
 
 class PushSubscription(Base):

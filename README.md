@@ -141,8 +141,14 @@ ni volver a desplegar:
   desactivarlas (se conserva su historial; no se puede desactivar a
   alguien que todavía tiene días asignados en la rotación).
 - **Rotación semanal** — quién le toca cada día de la semana.
-- **Hora del aviso** — a qué hora llega el push si nadie marcó que le dio
-  de comer. "A tiempo" se calcula automáticamente como una hora después.
+- **Horarios de aviso** — hay dos:
+  1. **Aviso principal**, solo para quien le toca ese día (por defecto 20:00).
+  2. **Si nadie marcó, avisar a todos**, un segundo aviso que llega a
+     *todos* si a esa hora nadie marcó que le dio de comer (por defecto
+     21:30). "A tiempo" en el historial se calcula contra este horario.
+  3. **Link del grupo de WhatsApp** (opcional) — si lo configurás, el
+     segundo aviso lleva directo al grupo al tocarlo, y aparece un botón
+     "Abrir grupo de WhatsApp" en la pantalla de Hoy.
 
 En el día a día también hay un botón **Deshacer** en la pantalla de Hoy,
 por si alguien marca por error que ya le dieron de comer.

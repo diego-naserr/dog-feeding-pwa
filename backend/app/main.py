@@ -186,13 +186,26 @@ def get_settings(db: Session = Depends(get_db)):
 
 @app.put("/api/settings", response_model=schemas.SettingsOut)
 def update_settings(req: schemas.SettingsUpdate, db: Session = Depends(get_db)):
+    whatsapp_url = (req.whatsapp_group_url or "").strip() or None
+    if whatsapp_url and not whatsapp_url.startswith("http"):
+        raise HTTPException(400, "El link tiene que empezar con http:// o https://")
+
     settings = _get_settings(db)
     settings.notify_hour = req.notify_hour
     settings.notify_minute = req.notify_minute
+    settings.reminder_hour = req.reminder_hour
+    settings.reminder_minute = req.reminder_minute
+    settings.whatsapp_group_url = whatsapp_url
     db.commit()
     db.refresh(settings)
 
-    scheduler_module.reschedule(scheduler, req.notify_hour, req.notify_minute)
+    scheduler_module.reschedule(
+        scheduler,
+        req.notify_hour,
+        req.notify_minute,
+        req.reminder_hour,
+        req.reminder_minute,
+    )
     return settings
 
 
@@ -300,8 +313,8 @@ def test_push(req: schemas.TestPushRequest, db: Session = Depends(get_db)):
 @app.get("/api/history", response_model=list[schemas.HistoryItem])
 def get_history(days: int = 30, db: Session = Depends(get_db)):
     settings = _get_settings(db)
-    cutoff_hour = (settings.notify_hour + 1) % 24
-    cutoff_minute = settings.notify_minute
+    cutoff_hour = settings.reminder_hour
+    cutoff_minute = settings.reminder_minute
 
     today = rotation.today_chile()
     start = today - timedelta(days=days - 1)

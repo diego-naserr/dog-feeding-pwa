@@ -10,7 +10,7 @@ let people = [];        // personas activas (para elegir "quien le dio de comer"
 let allPeople = [];      // activas + inactivas (para Ajustes)
 let schedule = [];       // [{weekday, person}]
 let pendingSchedule = {}; // ediciones sin guardar {weekday: person_id}
-let appSettings = { notify_hour: 20, notify_minute: 0 };
+let appSettings = { notify_hour: 20, notify_minute: 0, reminder_hour: 21, reminder_minute: 30, whatsapp_group_url: null };
 
 let openColorPickerFor = null; // id de persona con el selector de color abierto
 let renamingPersonId = null;   // id de persona en edicion de nombre
@@ -569,28 +569,63 @@ async function saveSchedule() {
 
 // ==================== AJUSTES: Hora del aviso ====================
 
-async function loadSettings() {
-  appSettings = await fetchJSON(`${API}/settings`);
-  const input = document.getElementById("notify-time-input");
-  if (input) {
-    input.value = `${pad2(appSettings.notify_hour)}:${pad2(appSettings.notify_minute)}`;
+function updateWhatsappButton() {
+  const btn = document.getElementById("whatsapp-link");
+  if (!btn) return;
+  if (appSettings.whatsapp_group_url) {
+    btn.href = appSettings.whatsapp_group_url;
+    btn.style.display = "flex";
+  } else {
+    btn.style.display = "none";
   }
 }
 
+async function loadSettings() {
+  appSettings = await fetchJSON(`${API}/settings`);
+  const notifyInput = document.getElementById("notify-time-input");
+  if (notifyInput) {
+    notifyInput.value = `${pad2(appSettings.notify_hour)}:${pad2(appSettings.notify_minute)}`;
+  }
+  const reminderInput = document.getElementById("reminder-time-input");
+  if (reminderInput) {
+    reminderInput.value = `${pad2(appSettings.reminder_hour)}:${pad2(appSettings.reminder_minute)}`;
+  }
+  const whatsappInput = document.getElementById("whatsapp-input");
+  if (whatsappInput) {
+    whatsappInput.value = appSettings.whatsapp_group_url || "";
+  }
+  updateWhatsappButton();
+}
+
+function parseTimeInput(id) {
+  const value = document.getElementById(id).value;
+  const [hour, minute] = value.split(":").map((n) => parseInt(n, 10));
+  return { hour, minute };
+}
+
 async function saveSettings() {
-  const input = document.getElementById("notify-time-input");
-  const [hour, minute] = input.value.split(":").map((n) => parseInt(n, 10));
-  if (Number.isNaN(hour) || Number.isNaN(minute)) {
-    toast("Elegí una hora válida", true);
+  const notify = parseTimeInput("notify-time-input");
+  const reminder = parseTimeInput("reminder-time-input");
+  if ([notify.hour, notify.minute, reminder.hour, reminder.minute].some(Number.isNaN)) {
+    toast("Elegí ambos horarios", true);
     return;
   }
+  const whatsappUrl = document.getElementById("whatsapp-input").value.trim();
+
   try {
     appSettings = await fetchJSON(`${API}/settings`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ notify_hour: hour, notify_minute: minute }),
+      body: JSON.stringify({
+        notify_hour: notify.hour,
+        notify_minute: notify.minute,
+        reminder_hour: reminder.hour,
+        reminder_minute: reminder.minute,
+        whatsapp_group_url: whatsappUrl || null,
+      }),
     });
-    toast("Hora del aviso guardada");
+    updateWhatsappButton();
+    toast("Horarios guardados");
   } catch (e) {
     toast(e.message, true);
   }
@@ -656,6 +691,11 @@ async function init() {
   await loadPeople();
   await loadToday();
   await loadHistory();
+  try {
+    await loadSettings();
+  } catch (e) {
+    console.error("No se pudo cargar ajustes:", e);
+  }
 
   const me = getMyPerson();
   if (!me) {

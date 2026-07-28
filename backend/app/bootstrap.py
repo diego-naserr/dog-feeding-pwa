@@ -15,9 +15,26 @@ def ensure_schema(engine: Engine) -> None:
     """Agrega columnas nuevas a tablas que ya existian antes de esta
     version, sin tocar los datos existentes."""
     with engine.connect() as conn:
-        cols = [row[1] for row in conn.execute(text("PRAGMA table_info(people)"))]
-        if "color" not in cols:
+        people_cols = [row[1] for row in conn.execute(text("PRAGMA table_info(people)"))]
+        if "color" not in people_cols:
             conn.execute(text("ALTER TABLE people ADD COLUMN color VARCHAR"))
+            conn.commit()
+
+        settings_cols = [
+            row[1] for row in conn.execute(text("PRAGMA table_info(app_settings)"))
+        ]
+        if "reminder_hour" not in settings_cols:
+            conn.execute(
+                text("ALTER TABLE app_settings ADD COLUMN reminder_hour INTEGER NOT NULL DEFAULT 21")
+            )
+            conn.commit()
+        if "reminder_minute" not in settings_cols:
+            conn.execute(
+                text("ALTER TABLE app_settings ADD COLUMN reminder_minute INTEGER NOT NULL DEFAULT 30")
+            )
+            conn.commit()
+        if "whatsapp_group_url" not in settings_cols:
+            conn.execute(text("ALTER TABLE app_settings ADD COLUMN whatsapp_group_url VARCHAR"))
             conn.commit()
 
 

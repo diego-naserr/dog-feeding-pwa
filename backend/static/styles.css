@@ -394,7 +394,40 @@ body {
   padding: 0.2rem 0.5rem;
 }
 
+/* Boton WhatsApp (Hoy) */
+.whatsapp-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.85rem;
+  padding: 0.85rem 1rem;
+  border-radius: 16px;
+  background: #25d366;
+  color: #fff;
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.whatsapp-button:active {
+  transform: scale(0.98);
+}
+
 /* Ajustes */
+.settings-field {
+  margin-bottom: 0.9rem;
+}
+
+.settings-field-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+}
+
 .settings-card {
   background: var(--card-bg);
   border-radius: 20px;

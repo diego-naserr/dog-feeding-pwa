@@ -70,11 +70,17 @@ class ScheduleItemIn(BaseModel):
 class SettingsOut(BaseModel):
     notify_hour: int
     notify_minute: int
+    reminder_hour: int
+    reminder_minute: int
+    whatsapp_group_url: Optional[str] = None
 
 
 class SettingsUpdate(BaseModel):
     notify_hour: int = Field(ge=0, le=23)
     notify_minute: int = Field(ge=0, le=59)
+    reminder_hour: int = Field(ge=0, le=23)
+    reminder_minute: int = Field(ge=0, le=59)
+    whatsapp_group_url: Optional[str] = Field(default=None, max_length=500)
 
 
 class TestPushRequest(BaseModel):
