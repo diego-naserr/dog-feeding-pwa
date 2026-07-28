@@ -186,25 +186,32 @@ def get_settings(db: Session = Depends(get_db)):
 
 @app.put("/api/settings", response_model=schemas.SettingsOut)
 def update_settings(req: schemas.SettingsUpdate, db: Session = Depends(get_db)):
-    whatsapp_url = (req.whatsapp_group_url or "").strip() or None
-    if whatsapp_url and not whatsapp_url.startswith("http"):
-        raise HTTPException(400, "El link tiene que empezar con http:// o https://")
-
     settings = _get_settings(db)
+    sent = req.model_fields_set  # que campos vinieron REALMENTE en el body
+
     settings.notify_hour = req.notify_hour
     settings.notify_minute = req.notify_minute
-    settings.reminder_hour = req.reminder_hour
-    settings.reminder_minute = req.reminder_minute
-    settings.whatsapp_group_url = whatsapp_url
+
+    if "reminder_hour" in sent and req.reminder_hour is not None:
+        settings.reminder_hour = req.reminder_hour
+    if "reminder_minute" in sent and req.reminder_minute is not None:
+        settings.reminder_minute = req.reminder_minute
+
+    if "whatsapp_group_url" in sent:
+        whatsapp_url = (req.whatsapp_group_url or "").strip() or None
+        if whatsapp_url and not whatsapp_url.startswith("http"):
+            raise HTTPException(400, "El link tiene que empezar con http:// o https://")
+        settings.whatsapp_group_url = whatsapp_url
+
     db.commit()
     db.refresh(settings)
 
     scheduler_module.reschedule(
         scheduler,
-        req.notify_hour,
-        req.notify_minute,
-        req.reminder_hour,
-        req.reminder_minute,
+        settings.notify_hour,
+        settings.notify_minute,
+        settings.reminder_hour,
+        settings.reminder_minute,
     )
     return settings
 

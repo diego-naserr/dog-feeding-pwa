@@ -78,8 +78,12 @@ class SettingsOut(BaseModel):
 class SettingsUpdate(BaseModel):
     notify_hour: int = Field(ge=0, le=23)
     notify_minute: int = Field(ge=0, le=59)
-    reminder_hour: int = Field(ge=0, le=23)
-    reminder_minute: int = Field(ge=0, le=59)
+    # Opcionales por compatibilidad: un cliente viejo (cache vieja del
+    # service worker) puede mandar solo notify_hour/notify_minute; en ese
+    # caso se conservan los valores de escalamiento/whatsapp que ya
+    # estaban guardados en vez de fallar.
+    reminder_hour: Optional[int] = Field(default=None, ge=0, le=23)
+    reminder_minute: Optional[int] = Field(default=None, ge=0, le=59)
     whatsapp_group_url: Optional[str] = Field(default=None, max_length=500)
 
 
