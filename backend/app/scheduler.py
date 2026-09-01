@@ -48,16 +48,15 @@ def check_and_notify() -> None:
 
 def check_and_escalate() -> None:
     """Segundo aviso: si a esta hora sigue sin marcarse, le llega a TODOS
-    los que tengan notificaciones activas (no solo a quien le tocaba)."""
+    los que tengan notificaciones activas (no solo a quien le tocaba).
+    Al tocarla, abre la app (el link de WhatsApp, si esta configurado,
+    solo se usa para el boton "Abrir grupo de WhatsApp" en Hoy)."""
     db = SessionLocal()
     try:
         today = rotation.today_chile()
         day = rotation.get_or_create_feeding_day(db, today)
         if day.fed:
             return
-
-        settings = _get_settings_row(db)
-        url = settings.whatsapp_group_url if settings and settings.whatsapp_group_url else "/"
 
         subs = db.query(models.PushSubscription).all()
         if not subs:
@@ -70,7 +69,7 @@ def check_and_escalate() -> None:
                 sub,
                 title="🚨 Todavía nadie le dio comida a los perros",
                 body=f"Le tocaba a {person.name} y sigue sin marcarse. ¿Quién puede ir?",
-                url=url,
+                url="/",
             )
             if result == "expired":
                 db.delete(sub)

@@ -146,9 +146,10 @@ ni volver a desplegar:
   2. **Si nadie marcó, avisar a todos**, un segundo aviso que llega a
      *todos* si a esa hora nadie marcó que le dio de comer (por defecto
      21:30). "A tiempo" en el historial se calcula contra este horario.
-  3. **Link del grupo de WhatsApp** (opcional) — si lo configurás, el
-     segundo aviso lleva directo al grupo al tocarlo, y aparece un botón
-     "Abrir grupo de WhatsApp" en la pantalla de Hoy.
+  3. **Link del grupo de WhatsApp** (opcional) — si lo configurás, aparece
+     un botón "Abrir grupo de WhatsApp" en la pantalla de Hoy. Las
+     notificaciones (principal y de escalamiento) siempre abren la app
+     al tocarlas.
 
 En el día a día también hay un botón **Deshacer** en la pantalla de Hoy,
 por si alguien marca por error que ya le dieron de comer.
