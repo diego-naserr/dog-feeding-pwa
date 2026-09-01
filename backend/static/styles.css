@@ -73,8 +73,12 @@ body {
   z-index: 5;
 }
 
-.app-header-icon {
-  font-size: 1.4rem;
+.app-header-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.7);
 }
 
 .app-header-title {
@@ -90,6 +94,22 @@ body {
   max-width: 480px;
   width: 100%;
   margin: 0 auto;
+}
+
+/* Banner de foto (Hoy) */
+.pups-banner {
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  margin-bottom: 1.1rem;
+}
+
+.pups-banner img {
+  display: block;
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  object-position: center 30%;
 }
 
 /* Hero card */

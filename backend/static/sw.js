@@ -1,5 +1,5 @@
-const CACHE_NAME = "turno-perros-v2";
-const APP_SHELL = ["/", "/styles.css", "/app.js", "/manifest.json"];
+const CACHE_NAME = "turno-perros-v3";
+const APP_SHELL = ["/", "/styles.css", "/app.js", "/manifest.json", "/images/perritos.jpg"];
 
 self.addEventListener("install", (event) => {
   self.skipWaiting();
